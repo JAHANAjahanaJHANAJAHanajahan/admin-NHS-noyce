@@ -7,6 +7,8 @@ from PIL import Image
 import time
 import tkinter as tk
 
+#TODO Improve your use of comments
+
 # Global variables
 BASE_DIR = r'C:\Users\jahros1011\OneDrive - Highgate School\computingyr10\screenshot test'
 screenshot_file_name = os.path.join(BASE_DIR, 'photos', 'image success.png')
