@@ -9,7 +9,7 @@ import tkinter as tk
 
 #TODO Improve your use of comments
 
-#TODO Write some code
+#TODO Write some code again
 
 # Global variables
 BASE_DIR = r'C:\Users\jahros1011\OneDrive - Highgate School\computingyr10\screenshot test'
