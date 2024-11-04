@@ -9,6 +9,8 @@ import tkinter as tk
 
 #TODO Improve your use of comments
 
+#TODO Write some code
+
 # Global variables
 BASE_DIR = r'C:\Users\jahros1011\OneDrive - Highgate School\computingyr10\screenshot test'
 file_name = os.path.join(BASE_DIR, 'photos', 'image success.png')
