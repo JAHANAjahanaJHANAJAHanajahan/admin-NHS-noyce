@@ -6,6 +6,7 @@ import pytesseract
 from PIL import Image
 import time
 import tkinter as tk
+import argparse
 
 #TODO Improve your use of comments
 
@@ -63,8 +64,8 @@ while running:
         # Detecting the mouse moving so that the red rectangle only updates when needed
         # Also drawing the actual red rectangle outline
         if event.type == MOUSEMOTION and mouseDown:
-            screenshot_width = pygame.mouse.get_pos()[0] - x_down
-            screenshot_height = pygame.mouse.get_pos()[1] - y_down
+            screenshot_width = abs(pygame.mouse.get_pos()[0] - x_down)
+            screenshot_height = abs(pygame.mouse.get_pos()[1] - y_down)
             screen.blit(bg, (0, 0))
             pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(x_down, y_down, screenshot_width, screenshot_height), 2)
 
@@ -81,18 +82,26 @@ while running:
 root = tk.Tk()
 root.geometry("300x300")
 
+ap = argparse.ArgumentParser()
+ap.add_argument("-d", "--digits", type=int, default = 1)
+args = vars(ap.parse_args())
+
+options = "outputbase digits"
+
 while True:
-    transcribed = pytesseract.image_to_string(Image.open(file_name))
-    print(transcribed, "Well...") # misha put sigma here
+    transcribed = pytesseract.image_to_string(Image.open(file_name), config=options)
+    print(transcribed) # misha put sigma here
     try:
         if int(transcribed) > max_age:
             root.configure(bg="blue")
+            print("ble")
         else:
             root.configure(bg="green")
+            print("gre")
     except:
         print("nuh uh didnt work matey yarr 🏴‍☠🦜⛵☠️🏴⚓")
 
-    newScreenshot = pyautogui.screenshot(region=(x_down, y_down, width, height))
+    newScreenshot = pyautogui.screenshot(region=(x_down, y_down, screenshot_width, screenshot_height))
     newScreenshot.save(file_name)
     time.sleep(5)
 
