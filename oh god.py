@@ -7,9 +7,8 @@ from PIL import Image
 import time
 import tkinter as tk
 
-#TODO Improve your use of comments
+# TODO Improve your use of comments
 
-print(os.getcwd())
 # Global variables
 BASE_DIR = os.getcwd()
 file_name = os.path.join(BASE_DIR, 'image success.png')
@@ -18,7 +17,7 @@ screen = pygame.display.set_mode((width, height))
 running = True
 max_age = 65
 
-#TKINTER WINDOW
+# TKINTER WINDOW
 
 
 # Removing the picture file if it is already there
@@ -37,7 +36,6 @@ screen.blit(bg, (0, 0))
 
 # Code for actually drawing the box and selecting the area
 while running:
-
 
     for event in pygame.event.get():
 
@@ -79,7 +77,7 @@ root.geometry("300x300")
 
 while True:
     transcribed = pytesseract.image_to_string(Image.open(file_name))
-    print(transcribed, "sigma") # misha put sigma here
+    print(transcribed, "sigma")  # misha put sigma here
     try:
         if int(transcribed) > max_age:
             root.configure(bg="blue")
