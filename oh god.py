@@ -7,11 +7,14 @@ from PIL import Image
 import time
 import tkinter as tk
 
+
+
 # TODO Improve your use of comments
 
 # Global variables
 BASE_DIR = os.getcwd()
 file_name = os.path.join(BASE_DIR, 'image success.png')
+pytesseract.pytesseract.tesseract_cmd = os.path.join(BASE_DIR, "Tesseract-OCR//tesseract.exe")
 width, height = pyautogui.size()
 screen = pygame.display.set_mode((width, height))
 running = True
@@ -26,10 +29,10 @@ if os.path.isfile(file_name):
 
 # Take a new screenshot of the entire screen
 whole_screen_capture = pyautogui.screenshot()
-whole_screen_capture.save(os.path.join(BASE_DIR, 'photos', 'image test.png'))
+whole_screen_capture.save(os.path.join(BASE_DIR, 'image test.png'))
 
 # Setting the background of the screen as the screenshot
-bg = pygame.image.load(os.path.join(BASE_DIR, 'photos', 'image test.png'))
+bg = pygame.image.load(os.path.join(BASE_DIR, 'image test.png'))
 
 mouseDown, mouseUp = False, False
 screen.blit(bg, (0, 0))
