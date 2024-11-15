@@ -9,9 +9,10 @@ import tkinter as tk
 
 #TODO Improve your use of comments
 
+print(os.getcwd())
 # Global variables
-BASE_DIR = r'C:\Users\jahros1011\OneDrive - Highgate School\computingyr10\screenshot test'
-screenshot_file_name = os.path.join(BASE_DIR, 'photos', 'image success.png')
+BASE_DIR = os.getcwd()
+file_name = os.path.join(BASE_DIR, 'image success.png')
 width, height = pyautogui.size()
 screen = pygame.display.set_mode((width, height))
 running = True
