@@ -14,7 +14,7 @@ import tkinter as tk
 # Global variables
 BASE_DIR = os.getcwd()
 file_name = os.path.join(BASE_DIR, 'image success.png')
-pytesseract.pytesseract.tesseract_cmd = os.path.join(BASE_DIR, "Tesseract-OCR//tesseract.exe")
+pytesseract.pytesseract.tesseract_cmd = os.path.join(BASE_DIR, "Tesseract-OCR", "tesseract.exe")
 width, height = pyautogui.size()
 screen = pygame.display.set_mode((width, height))
 running = True
