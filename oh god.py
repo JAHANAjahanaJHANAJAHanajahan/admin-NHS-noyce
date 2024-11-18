@@ -7,8 +7,6 @@ from PIL import Image
 import time
 import tkinter as tk
 
-
-
 # TODO Improve your use of comments
 
 # Global variables
@@ -60,11 +58,13 @@ while running:
         # When the mouse button is released, the final screenshot corner coordinates are determined and run through
         # pyautogui to take the screenshot
         if event.type == MOUSEBUTTONUP:
-            # x_up, y_up = pygame.mouse.get_pos()
+            x_up, y_up = pygame.mouse.get_pos()
             mouseUp = True
             if mouseDown and mouseUp:
-                # screenshot_width = x_up - x_down
-                # screenshot_height = y_up - y_down
+                print (x_down, y_down, x_up, y_up)
+                screenshot_width = x_up - x_down
+                screenshot_height = y_up - y_down
+                print (screenshot_width, screenshot_height)
                 newScreenshot = pyautogui.screenshot(region=(x_down, y_down, screenshot_width, screenshot_height))
                 newScreenshot.save(file_name)
 
@@ -80,16 +80,22 @@ root.geometry("300x300")
 
 while True:
     transcribed = pytesseract.image_to_string(Image.open(file_name))
-    print(transcribed, "sigma")  # misha put sigma here
+    print(transcribed)  # misha put sigma here
     try:
+        print (int(transcribed))
         if int(transcribed) > max_age:
-            root.configure(bg="blue")
+            print("blue")
+            #root.configure(bg="blue")
         else:
-            root.configure(bg="green")
+            print("green")
+            #root.configure(bg="green")
     except:
         print("nuh uh")
 
-    newScreenshot = pyautogui.screenshot(region=(x_down, y_down, width, height))
+    os.remove(file_name)
+    newScreenshot = pyautogui.screenshot(region=(x_down, y_down, screenshot_width, screenshot_height))
     newScreenshot.save(file_name)
     time.sleep(5)
-    root.mainloop()
+
+root.mainloop()
+
