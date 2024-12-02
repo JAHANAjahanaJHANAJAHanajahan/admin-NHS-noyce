@@ -3,9 +3,11 @@ import pygame
 from pygame.locals import *
 import os
 import pytesseract
-from PIL import Image
+from PIL import Image, ImageFilter
 import time
 import tkinter as tk
+
+from pygame.transform import threshold
 
 # TODO Improve your use of comments
 
@@ -17,9 +19,8 @@ width, height = pyautogui.size()
 screen = pygame.display.set_mode((width, height))
 running = True
 max_age = 65
-
-# TKINTER WINDOW
-
+screenshot_width = 0
+screenshot_height = 0
 
 # Removing the picture file if it is already there
 if os.path.isfile(file_name):
@@ -94,8 +95,11 @@ while True:
 
     os.remove(file_name)
     newScreenshot = pyautogui.screenshot(region=(x_down, y_down, screenshot_width, screenshot_height))
+    newScreenshot = newScreenshot.convert("L")
+    threshold = 200
+    #newScreenshot = newScreenshot.filter(ImageFilter.GaussianBlur(radius=1))
+    newScreenshot = newScreenshot.point(lambda x: 0 if x < threshold else 255, '1')
     newScreenshot.save(file_name)
     time.sleep(5)
 
 root.mainloop()
-
