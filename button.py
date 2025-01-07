@@ -1,24 +1,28 @@
 import pygame
 import sys
 
+button_size = 300, 50
+
 pygame.init()
 i = 0
 
+
+
 clock = pygame.time.Clock()
 
-window_size = (400,400)
+window_size = (500,500)
 screen = pygame.display.set_mode(window_size)
 pygame.display.set_caption("Jahan's Button Test")
 
 font = pygame.font.Font(None, 24)
 
-button_surface = pygame.Surface((150,50))
+button_surface = pygame.Surface(button_size)
 
-text = font.render("Click me please please", True, (0,0,0))
+text = font.render("Click me please please PLEASE JusT CLICK ME SEMOBODY CLICK ME", True, (0,0,0))
 text_rect = text.get_rect(center=(button_surface.get_width() / 2, button_surface.get_height() / 2))
 
 # Create a pygame.Rect object that represents the button's boundaries
-button_rect = pygame.Rect(125, 125, 150, 50)  # Adjust the position as needed
+button_rect = pygame.Rect(10, 10, *button_size)  # Adjust the position as needed
 
 # Start the main loop
 while True:
@@ -26,7 +30,7 @@ while True:
     clock.tick(60)
 
     # Fill the display with color
-    screen.fill((155, 255, 155))
+    screen.fill((255, 255, 255))
 
     # Get events from the event queue
     for event in pygame.event.get():
@@ -45,9 +49,9 @@ while True:
 
     # Check if the mouse is over the button. This will create the button hover effect
     if button_rect.collidepoint(pygame.mouse.get_pos()):
-        pygame.draw.rect(button_surface, (127, 255, 212), (1, 1, 148, 48))
+        pygame.draw.rect(button_surface, (22, 184, 124), (1, 1, 148, 48))
     else:
-        pygame.draw.rect(button_surface, (0, 0, 0), (0, 0, 150, 50))
+        pygame.draw.rect(button_surface, (0, 0, 0), (0, 0, *button_size))
         pygame.draw.rect(button_surface, (255, 255, 255), (1, 1, 148, 48))
         pygame.draw.rect(button_surface, (0, 0, 0), (1, 1, 148, 1), 2)
         pygame.draw.rect(button_surface, (0, 100, 0), (1, 48, 148, 10), 2)
