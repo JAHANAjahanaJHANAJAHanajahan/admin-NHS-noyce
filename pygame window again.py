@@ -13,6 +13,7 @@ from pygame.transform import threshold
 
 BASE_DIR = os.getcwd()
 file_name = os.path.join(BASE_DIR, 'image success.png')
+noimage_file_name = os.path.join(BASE_DIR, 'noimage.png')
 pytesseract.pytesseract.tesseract_cmd = os.path.join(BASE_DIR, "Tesseract-OCR", "tesseract.exe")
 max_age = 65
 smallfont = pygame.font.SysFont('Corbel', 35)
@@ -23,6 +24,8 @@ if os.path.isfile(file_name):
     os.remove(file_name)
 
 def screenshot():
+    if os.path.isfile(file_name):
+        os.remove(file_name)
     width, height = pyautogui.size()
     screen = pygame.display.set_mode((width, height))
     running = True
@@ -80,14 +83,18 @@ def screenshot():
     menu()
 
 def menu():
-
-    # screen resolution
-    res = (720, 720)
+        # screen resolution
+    res = (1000, 650)
 
     # opens up a window
     screen = pygame.display.set_mode(res)
+    if os.path.isfile(file_name):
+        imp = pygame.image.load(file_name).convert()
+    else:
+        imp = pygame.image.load(noimage_file_name).convert()
+    imp = pygame.transform.scale(imp, (1000, 650))
 
-    # white color
+# white color
 
     # light shade of the button
     color_light = (170, 170, 170)
@@ -102,6 +109,7 @@ def menu():
     # stores the height of the
     # screen into a variable
     height = screen.get_height()
+
 
     while True:
 
@@ -122,7 +130,7 @@ def menu():
 
                     # fills the screen with a color
         screen.fill((60, 25, 60))
-
+        screen.blit(imp, (0, 0))
         # stores the (x,y) coordinates into
         # the variable as a tuple
         mouse = pygame.mouse.get_pos()
