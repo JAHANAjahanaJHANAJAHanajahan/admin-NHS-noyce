@@ -16,7 +16,7 @@ file_name = os.path.join(BASE_DIR, 'image success.png')
 noimage_file_name = os.path.join(BASE_DIR, 'noimage.png')
 pytesseract.pytesseract.tesseract_cmd = os.path.join(BASE_DIR, "Tesseract-OCR", "tesseract.exe")
 max_age = 65
-smallfont = pygame.font.SysFont('Corbel', 35)
+smallfont = pygame.font.SysFont('comic sans', 35)
 color = (255, 255, 255)
 text = smallfont.render('please please please', True, color)
 
@@ -67,10 +67,10 @@ def screenshot():
                 x_up, y_up = pygame.mouse.get_pos()
                 mouseUp = True
                 if mouseDown and mouseUp:
-                    print(x_down, y_down, x_up, y_up)
+                    #print(x_down, y_down, x_up, y_up)
                     screenshot_width = x_up - x_down
                     screenshot_height = y_up - y_down
-                    print(screenshot_width, screenshot_height)
+                    #print(screenshot_width, screenshot_height)
                     newScreenshot = pyautogui.screenshot(region=(x_down, y_down, screenshot_width, screenshot_height))
                     newScreenshot.save(file_name)
 
@@ -84,7 +84,7 @@ def screenshot():
 
 def menu():
         # screen resolution
-    res = (1000, 650)
+    res = (800, 600)
 
     # opens up a window
     screen = pygame.display.set_mode(res)
@@ -92,9 +92,12 @@ def menu():
         imp = pygame.image.load(file_name).convert()
     else:
         imp = pygame.image.load(noimage_file_name).convert()
-    imp = pygame.transform.scale(imp, (1000, 650))
+    temp_resolution = imp.get_size()
+    print(temp_resolution)
 
-# white color
+    imp = pygame.transform.scale(imp, res)
+
+
 
     # light shade of the button
     color_light = (170, 170, 170)
