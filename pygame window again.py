@@ -27,7 +27,9 @@ def screenshot():
     if os.path.isfile(file_name):
         os.remove(file_name)
     width, height = pyautogui.size()
-    screen = pygame.display.set_mode((width, height))
+
+    print(width, height)
+
     running = True
     screenshot_width = 0
     screenshot_height = 0
@@ -37,6 +39,8 @@ def screenshot():
 
     # Setting the background of the screen as the screenshot
     bg = pygame.image.load(os.path.join(BASE_DIR, 'image test.png'))
+
+    screen = pygame.display.set_mode((width, height))
 
     mouseDown, mouseUp = False, False
     screen.blit(bg, (0, 0))
@@ -92,8 +96,8 @@ def menu():
         imp = pygame.image.load(file_name).convert()
     else:
         imp = pygame.image.load(noimage_file_name).convert()
-    temp_resolution = imp.get_size()
-    print(temp_resolution)
+    #temp_resolution = imp.get_size()
+    #print(temp_resolution)
 
     imp = pygame.transform.scale(imp, res)
 
