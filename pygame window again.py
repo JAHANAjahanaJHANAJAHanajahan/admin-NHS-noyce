@@ -23,6 +23,35 @@ text = smallfont.render('please please please', True, color)
 if os.path.isfile(file_name):
     os.remove(file_name)
 
+def letterbox_image(image, target_width, target_height, background_color=(0, 0, 0)):
+    # Get the original dimensions of the image
+    original_width, original_height = image.get_size()
+
+    # Calculate the scaling factor to fit the image within the target dimensions
+    width_ratio = target_width / original_width
+    height_ratio = target_height / original_height
+    scale_factor = min(width_ratio, height_ratio)  # Maintain aspect ratio
+
+    # Calculate the new dimensions of the scaled image
+    scaled_width = int(original_width * scale_factor)
+    scaled_height = int(original_height * scale_factor)
+
+    # Scale the image
+    scaled_image = pygame.transform.scale(image, (scaled_width, scaled_height))
+
+    # Create a new surface for the letterboxed image
+    letterboxed_surface = pygame.Surface((target_width, target_height))
+    letterboxed_surface.fill(background_color)  # Fill with the background color
+
+    # Calculate the position to center the scaled image
+    x_offset = (target_width - scaled_width) // 2
+    y_offset = (target_height - scaled_height) // 2
+
+    # Blit the scaled image onto the letterboxed surface
+    letterboxed_surface.blit(scaled_image, (x_offset, y_offset))
+
+    return letterboxed_surface
+
 def screenshot():
     if os.path.isfile(file_name):
         os.remove(file_name)
@@ -96,9 +125,7 @@ def menu():
         imp = pygame.image.load(file_name).convert()
     else:
         imp = pygame.image.load(noimage_file_name).convert()
-    #temp_resolution = imp.get_size()
-    #print(temp_resolution)
-
+    imp = letterbox_image(imp, 800, 600)
     imp = pygame.transform.scale(imp, res)
 
 
