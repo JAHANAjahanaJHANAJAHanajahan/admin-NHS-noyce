@@ -42,63 +42,61 @@ def letterbox_image(image, target_width, target_height, background_color=(0, 0, 
     letterboxed_surface.blit(scaled_image, (x_offset, y_offset))
     return letterboxed_surface
 
-def screenshot():
-    global screenshot_coords
-    if os.path.isfile(file_name):
-        os.remove(file_name)
-    width, height = pyautogui.size()
-    running = True
-    time.sleep(1)
-    whole_screen_capture = pyautogui.screenshot()
-    whole_screen_capture.save(os.path.join(BASE_DIR, 'image_test.png'))
-    screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
-    bg = pygame.image.load(os.path.join(BASE_DIR, 'image_test.png')).convert()
-    mouseDown, mouseUp = False, False
-    screen.blit(bg, (0, 0))
-
-    while running:
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    x_down, y_down = pygame.mouse.get_pos()
-                    mouseDown = True
-
-            if event.type == MOUSEMOTION and mouseDown:
-                x_current, y_current = pygame.mouse.get_pos()
-                screenshot_width = abs(x_current - x_down)
-                screenshot_height = abs(y_current - y_down)
-                screen.blit(bg, (0, 0))
-                pygame.draw.rect(
-                    screen,
-                    (255, 0, 0),
-                    (
-                        min(x_down, x_current),
-                        min(y_down, y_current),
-                        screenshot_width,
-                        screenshot_height
-                    ),
-                    2
-                )
-
-            if event.type == MOUSEBUTTONUP:
-                x_up, y_up = pygame.mouse.get_pos()
-                mouseUp = True
-                if mouseDown and mouseUp:
-                    x1 = min(x_down, x_up)
-                    y1 = min(y_down, y_up)
-                    x2 = max(x_down, x_up)
-                    y2 = max(y_down, y_up)
-                    screenshot_width = x2 - x1
-                    screenshot_height = y2 - y1
-                    screenshot_coords = (x1, y1, screenshot_width, screenshot_height)
-                    newScreenshot = pyautogui.screenshot(region=screenshot_coords)
-                    newScreenshot.save(file_name)
-
-        if os.path.isfile(file_name):
-            pygame.quit()
-            running = False
-        else:
-            pygame.display.update()
+    # if os.path.isfile(file_name):
+    #     os.remove(file_name)
+    # width, height = pyautogui.size()
+    # running = True
+    # time.sleep(1)
+    # whole_screen_capture = pyautogui.screenshot()
+    # whole_screen_capture.save(os.path.join(BASE_DIR, 'image_test.png'))
+    # screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+    # bg = pygame.image.load(os.path.join(BASE_DIR, 'image_test.png')).convert()
+    # mouseDown, mouseUp = False, False
+    # screen.blit(bg, (0, 0))
+    #
+    # while running:
+    #     for event in pygame.event.get():
+    #         if event.type == MOUSEBUTTONDOWN:
+    #             if event.button == 1:
+    #                 x_down, y_down = pygame.mouse.get_pos()
+    #                 mouseDown = True
+    #
+    #         if event.type == MOUSEMOTION and mouseDown:
+    #             x_current, y_current = pygame.mouse.get_pos()
+    #             screenshot_width = abs(x_current - x_down)
+    #             screenshot_height = abs(y_current - y_down)
+    #             screen.blit(bg, (0, 0))
+    #             pygame.draw.rect(
+    #                 screen,
+    #                 (255, 0, 0),
+    #                 (
+    #                     min(x_down, x_current),
+    #                     min(y_down, y_current),
+    #                     screenshot_width,
+    #                     screenshot_height
+    #                 ),
+    #                 2
+    #             )
+    #
+    #         if event.type == MOUSEBUTTONUP:
+    #             x_up, y_up = pygame.mouse.get_pos()
+    #             mouseUp = True
+    #             if mouseDown and mouseUp:
+    #                 x1 = min(x_down, x_up)
+    #                 y1 = min(y_down, y_up)
+    #                 x2 = max(x_down, x_up)
+    #                 y2 = max(y_down, y_up)
+    #                 screenshot_width = x2 - x1
+    #                 screenshot_height = y2 - y1
+    #                 screenshot_coords = (x1, y1, screenshot_width, screenshot_height)
+    #                 newScreenshot = pyautogui.screenshot(region=screenshot_coords)
+    #                 newScreenshot.save(file_name)
+    #
+    #     if os.path.isfile(file_name):
+    #         pygame.quit()
+    #         running = False
+    #     else:
+    #         pygame.display.update()
     #menu()
 
 def perform_ocr():
@@ -121,17 +119,6 @@ def stop_ocr():
     ocr_running = False
 
 def menu():
-    res = (800, 600)
-    screen = pygame.display.set_mode(res)
-    if os.path.isfile(file_name):
-        imp = pygame.image.load(file_name).convert()
-    else:
-        imp = None
-
-    color_light = (170, 170, 170)
-    color_dark = (100, 100, 100)
-    width = screen.get_width()
-    height = screen.get_height()
 
     while True:
         for ev in pygame.event.get():
@@ -141,13 +128,81 @@ def menu():
             if ev.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 if width / 2 - 70 <= mouse[0] <= width / 2 + 70 and 20 <= mouse[1] <= 60:
-                    pygame.quit()
+                    #screenpygame.display.set_mode(flags=pygame.HIDDEN)
                     time.sleep(1)
-                    screenshot()
+
+                    if os.path.isfile(file_name):
+                        os.remove(file_name)
+                    width, height = pyautogui.size()
+                    running = True
+                    time.sleep(1)
+                    whole_screen_capture = pyautogui.screenshot()
+                    whole_screen_capture.save(os.path.join(BASE_DIR, 'image_test.png'))
+                    screenshot_screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+                    bg = pygame.image.load(os.path.join(BASE_DIR, 'image_test.png')).convert()
+                    mouseDown, mouseUp = False, False
+                    screenshot_screen.blit(bg, (0, 0))
+
+                    while running:
+                        for event in pygame.event.get():
+                            if event.type == MOUSEBUTTONDOWN:
+                                if event.button == 1:
+                                    x_down, y_down = pygame.mouse.get_pos()
+                                    mouseDown = True
+
+                            if event.type == MOUSEMOTION and mouseDown:
+                                x_current, y_current = pygame.mouse.get_pos()
+                                screenshot_width = abs(x_current - x_down)
+                                screenshot_height = abs(y_current - y_down)
+                                screen.blit(bg, (0, 0))
+                                pygame.draw.rect(
+                                    screenshot_screen,
+                                    (255, 0, 0),
+                                    (
+                                        min(x_down, x_current),
+                                        min(y_down, y_current),
+                                        screenshot_width,
+                                        screenshot_height
+                                    ),
+                                    2
+                                )
+
+                            if event.type == MOUSEBUTTONUP:
+                                x_up, y_up = pygame.mouse.get_pos()
+                                mouseUp = True
+                                if mouseDown and mouseUp:
+                                    x1 = min(x_down, x_up)
+                                    y1 = min(y_down, y_up)
+                                    x2 = max(x_down, x_up)
+                                    y2 = max(y_down, y_up)
+                                    screenshot_width = x2 - x1
+                                    screenshot_height = y2 - y1
+                                    screenshot_coords = (x1, y1, screenshot_width, screenshot_height)
+                                    newScreenshot = pyautogui.screenshot(region=screenshot_coords)
+                                    newScreenshot.save(file_name)
+
+                        if os.path.isfile(file_name):
+                            pygame.display.quit()
+                            running = False
+                        else:
+                            pygame.display.update()
+
                 elif width / 2 - 70 <= mouse[0] <= width / 2 + 70 and 80 <= mouse[1] <= 120:
                     start_ocr()
                 elif width / 2 - 70 <= mouse[0] <= width / 2 + 70 and 140 <= mouse[1] <= 180:
                     stop_ocr()
+
+        res = (800, 600)
+        screen = pygame.display.set_mode(res)
+        if os.path.isfile(file_name):
+            imp = pygame.image.load(file_name).convert()
+        else:
+            imp = None
+
+        color_light = (170, 170, 170)
+        color_dark = (100, 100, 100)
+        width = screen.get_width()
+        height = screen.get_height()
 
         screen.fill((60, 25, 60))
         if imp:
