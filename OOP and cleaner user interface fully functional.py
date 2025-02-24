@@ -11,11 +11,9 @@ from PIL import Image, ImageFilter, ImageEnhance
 pygame.init()
 
 def letterbox_image(image, target_width, target_height, background_color=(50, 50, 50)):
-    """
-    Scales the given pygame Surface to fill as much as possible of the target area
-    without altering its aspect ratio, then letterboxes the result on a surface of the
-    target size.
-    """
+
+    #scales the given pygame Surface to fill as much as possible of the target area without altering its aspect ratio, then letterboxes the result on a surface of the target size
+
     orig_width, orig_height = image.get_size()
     scale = min(target_width / orig_width, target_height / orig_height)
     new_width = int(orig_width * scale)
@@ -30,19 +28,16 @@ def letterbox_image(image, target_width, target_height, background_color=(50, 50
 
     
 class ScreenshotSelector:
-    """
-    Handles taking a full-screen screenshot and letting the user select an area.
-    """
+
+    #Handles taking a full-screen screenshot and letting the user select an area.
+
     def __init__(self):
         self.selected_rect = None
 
     def select_area(self):
-        """
-        Displays a full-screen screenshot and allows the user to click & drag to select
-        an area. Returns a tuple: (selected_rect, selected_image) where selected_rect
-        is (x, y, width, height) and selected_image is a PIL image.
-        Returns None if the user quits during selection.
-        """
+
+        #Displays a full-screen screenshot and allows the user to click & drag to select an area. Returns a tuple: (selected_rect, selected_image) where selected_rect is (x, y, width, height) and selected_image is a PIL image. Returns None if the user quits during selection.
+
         screen_width, screen_height = pyautogui.size()
         full_screen_pil = pyautogui.screenshot()  # Capture full screen as a PIL image
 
@@ -97,11 +92,9 @@ class ScreenshotSelector:
 
 
 class App:
-    """
-    Main application class that displays the UI, handles area selection,
-    toggles OCR on the selected area (with pre-processing), and spawns an
-    output window for OCR results. Also includes hidden debug controls.
-    """
+
+    #Main application class that displays the UI, handles area selection, toggles OCR on the selected area (with pre-processing), and spawns an output window for OCR results. Also includes hidden debug controls.
+
     def __init__(self):
         self.width = 800
         self.height = 600
@@ -144,9 +137,7 @@ class App:
         self.debug_more_rect = pygame.Rect(135, 5, 60, 30)
 
     def run(self):
-        """
-        Main loop.
-        """
+
         while self.running:
             self.handle_events()
             self.draw()
@@ -166,9 +157,9 @@ class App:
         sys.exit()
 
     def handle_events(self):
-        """
-        Processes Pygame events.
-        """
+
+        #Processes Pygame events
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -209,10 +200,9 @@ class App:
                         print("Output window spawned.")
 
     def start_selection(self):
-        """
-        Switches to selection mode (using a minimal window during selection)
-        and restores the main UI immediately afterward.
-        """
+
+        #Switches to selection mode (using a minimal window during selection) and restores the main UI immediately afterward.
+
         # Switch to a minimal window to hide the main UI briefly
         pygame.display.set_mode((1, 1))
         pygame.time.delay(100)
@@ -235,9 +225,9 @@ class App:
         pygame.display.flip()
 
     def toggle_ocr(self):
-        """
-        Toggles the OCR loop on or off. If no output window exists, spawn one automatically.
-        """
+
+        #Toggles the OCR loop on or off. If no output window exists, spawn one automatically.
+
         if not self.output_window:
             self.spawn_output_window()
 
@@ -250,38 +240,28 @@ class App:
             threading.Thread(target=self.ocr_loop, daemon=True).start()
 
     def ocr_loop(self):
-        """
-        Every 10 seconds, capture the selected area, pre-process it, perform OCR,
-        update the preview image, and print the OCR result.
-        The pre-processing steps include:
-         - Converting to grayscale
-         - Upscaling (to enlarge small numbers)
-         - Binarizing via thresholding
-         - Running OCR with a digit whitelist
-        """
         while self.ocr_active:
             if self.selected_rect:
                 # Capture the selected region as a PIL image
                 screenshot = pyautogui.screenshot(region=self.selected_rect)
-                # Preprocess the image:
-                # 1. Convert to grayscale
+                #Convert to grayscale
                 processed = screenshot.convert("L")
-                # 2. Upscale the image by a factor (e.g., 3x)
+                #Upscale the image by a factor
                 width, height = processed.size
                 upscale_factor = 3
                 processed = processed.resize((width * upscale_factor, height * upscale_factor), resample=Image.Resampling.LANCZOS)
-                # 3. Binarize (thresholding): Convert to pure black & white
+                #Binarize (thresholding): Convert to pure black & white
                 threshold = 128
                 processed = processed.point(lambda x: 0 if x < threshold else 255, '1')
-                # Convert back to grayscale (L) for Tesseract
+                #Convert back to grayscale for Tesseract
                 processed = processed.convert("L")
-                # For preview purposes, convert to RGB
+                #For preview purposes, convert to RGB
                 processed_rgb = processed.convert("RGB")
                 mode = processed_rgb.mode
                 size = processed_rgb.size
                 data = processed_rgb.tobytes()
                 self.selected_image = pygame.image.fromstring(data, size, mode)
-                # Run OCR with digit-only settings:
+                #Run OCR with digit-only settings
                 custom_config = "--psm 7 -c tessedit_char_whitelist=0123456789"
                 ocr_result = pytesseract.image_to_string(processed, config=custom_config).strip()
                 try:
@@ -294,9 +274,9 @@ class App:
             time.sleep(10)
 
     def spawn_output_window(self):
-        """
-        Spawns a new resizable Tkinter window for displaying OCR results.
-        """
+
+        #Spawns a new resizable Tkinter window for displaying OCR results.
+
         if self.output_window:
             return  # Already exists
 
@@ -322,9 +302,9 @@ class App:
         btn_clear.pack(side="right", padx=2)
 
     def on_output_window_close(self):
-        """
-        Called when the output window is closed.
-        """
+
+        #Called when the output window is closed.
+
         if self.output_window:
             self.output_window.destroy()
         self.output_window = None
@@ -332,21 +312,20 @@ class App:
         print("Output window closed. OCR deactivated.")
 
     def update_output_window(self):
-        """
-        Updates the Tkinter window’s background and label based on the latest OCR result
-        or manual override.
-        """
+
+        #Updates the Tkinter window’s background and label based on the latest OCR result or manual override.
+
         if not self.output_window or not self.output_label:
             return
 
-        # If manual override is active, keep its settings
+        #If manual override is active, keep its settings
         if self.manual_override:
             self.output_window.configure(bg=self.manual_bg_color)
             self.output_label.configure(bg=self.manual_bg_color, text=self.manual_text)
             return
 
         if self.latest_ocr_number is not None:
-            # Set background color based on OCR number:
+            #Set background color based on OCR number:
             if self.latest_ocr_number >= 65:
                 bg_color = "#0000FF"  # Blue
             else:
@@ -360,9 +339,9 @@ class App:
         self.output_label.configure(text=text, bg=bg_color)
 
     def manual_clear(self):
-        """
-        Clears the manual override so that OCR results update the window again.
-        """
+
+        #Clears the manual override so that OCR results update the window again.
+
         if self.output_window and self.output_label:
             self.manual_override = False
             self.manual_bg_color = None
@@ -371,9 +350,9 @@ class App:
             self.output_label.configure(text="Awaiting next input...", bg="#AAAAAA")
 
     def manual_green(self):
-        """
-        Manually sets the output window to green.
-        """
+
+        #Manually sets the output window to green.
+
         if self.output_window and self.output_label:
             self.manual_override = True
             self.manual_bg_color = "#00FF00"
@@ -382,9 +361,9 @@ class App:
             self.output_label.configure(text=self.manual_text, bg=self.manual_bg_color)
 
     def manual_blue(self):
-        """
-        Manually sets the output window to blue.
-        """
+
+        #Manually sets the output window to blue.
+
         if self.output_window and self.output_label:
             self.manual_override = True
             self.manual_bg_color = "#0000FF"
@@ -393,38 +372,43 @@ class App:
             self.output_label.configure(text=self.manual_text, bg=self.manual_bg_color)
 
     def draw_button(self, rect, text, base_color, hover_color, disabled=False):
-        """
-        Draws a button with a hover effect. If disabled, uses a gray color.
-        """
+
+        #Draws a button with a hover effect. If disabled, uses a gray color.
+
         mouse_pos = pygame.mouse.get_pos()
-        color = (120, 120, 120) if disabled else (hover_color if rect.collidepoint(mouse_pos) else base_color)
+        if disabled:
+            color = (120, 120, 120)
+        elif rect.collidepoint(mouse_pos):
+            color = hover_color
+        else:
+            color = base_color
         pygame.draw.rect(self.screen, color, rect)
         txt_surface = self.font.render(text, True, (255, 255, 255))
         txt_rect = txt_surface.get_rect(center=rect.center)
         self.screen.blit(txt_surface, txt_rect)
 
     def draw(self):
-        """
-        Draws the main UI (buttons and preview area).
-        """
+
+        #Draws the main UI (buttons and preview area).
+
         self.screen.fill((30, 30, 30))
 
-        # Draw main buttons:
+        #Draw main buttons
         self.draw_button(self.select_button_rect, "Select Area", (70, 70, 200), (100, 100, 230))
-        # Use red shades when OCR is active (i.e. "Deactivate" state)
+        #Use red shades when OCR is active
         if self.ocr_active:
             self.draw_button(self.ocr_button_rect, "Deactivate", (200, 70, 70), (230, 100, 100))
         else:
             self.draw_button(self.ocr_button_rect, "Begin Screen Reading", (70, 200, 70), (100, 230, 100), disabled=(self.selected_image is None))
         
-        # Toggle button for spawning or killing the output window
+        #Toggle button for spawning or killing the output window
         if self.output_window:
             spawn_text = "Kill Output Window"
         else:
             spawn_text = "Spawn Output Window"
         self.draw_button(self.spawn_output_button_rect, spawn_text, (70, 130, 200), (100, 150, 230))
 
-        # Draw preview area:
+        #Draw preview area
         pygame.draw.rect(self.screen, (50, 50, 50), self.preview_area)
         if self.selected_image:
             preview = letterbox_image(self.selected_image, self.preview_area.width, self.preview_area.height)
@@ -434,9 +418,9 @@ class App:
             ph_rect = placeholder.get_rect(center=self.preview_area.center)
             self.screen.blit(placeholder, ph_rect)
 
-        # Draw debug toggle button (always visible)
+        #Draw debug toggle button
         self.draw_button(self.debug_toggle_rect, "Debug", (80, 80, 80), (110, 110, 110))
-        # If in debug mode, draw additional debug buttons
+        #If in debug mode, draw additional debug buttons
         if self.debug_mode:
             self.draw_button(self.debug_less_rect, "<65", (80, 80, 80), (110, 110, 110))
             self.draw_button(self.debug_more_rect, ">65", (80, 80, 80), (110, 110, 110))
