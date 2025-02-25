@@ -1,3 +1,4 @@
+import os
 import pygame
 import pyautogui
 import sys
@@ -9,6 +10,7 @@ from PIL import Image, ImageFilter, ImageEnhance
 
 # Initialize pygame
 pygame.init()
+pytesseract.pytesseract.tesseract_cmd = os.path.join(os.getcwd(), r"Tesseract-OCR/tesseract.exe")
 
 def letterbox_image(image, target_width, target_height, background_color=(50, 50, 50)):
 
