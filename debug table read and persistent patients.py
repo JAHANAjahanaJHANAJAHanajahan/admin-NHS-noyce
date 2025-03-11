@@ -93,8 +93,8 @@ class ScreenshotSelector:
 class App:
     def __init__(self):
         # Expanded window for dual-area (age and name) selection
-        self.width = 1200
-        self.height = 600
+        self.width = 1150
+        self.height = 400
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Screenshot Selector")
         self.clock = pygame.time.Clock()
@@ -387,6 +387,7 @@ class App:
         cursor.execute("SELECT * FROM patient")
         rows = cursor.fetchall()
         print("Database contents:")
+        print("ID  Age   Type    Patient Name")
         for row in rows:
             print(row)
 
