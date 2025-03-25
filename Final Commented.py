@@ -3,7 +3,7 @@ import pygame                               # Library for creating graphical app
 import pyautogui                            # Library for taking screenshots
 import sys                                  # Provides system-specific functions and parameters
 import pytesseract                          # Python wrapper for the Google Tesseract OCR engine
-import threading                            # Allows running separate threads for concurrent execution. I am using Daemon threads
+import threading                            # Allows running separate threads for concurrent execution
 import time                                 # Provides time-related functions like sleep
 import tkinter as tk                        # GUI library for creating additional windows
 from PIL import Image                       # Library for image processing and manipulation
@@ -49,7 +49,8 @@ def compute_record_hash(age, patient_name, vaccine_type):
     # Returns the sha256 hash of the concatenated string
     return hashlib.sha256(record_str.encode('utf-8')).hexdigest()
 
-# Function to letterbox images. Scales and centers an image within a target area while preserving its aspect ratio and adding padding when nescessary
+# Function to letterbox images. Scales and centers an image within a target area while preserving its aspect ratio
+# and adding paddingwhen nescessary
 def letterbox_image(image, target_width, target_height, background_color=(50, 50, 50)):
     orig_width, orig_height = image.get_size()  # Get original dimensions of the image
     scale = min(target_width / orig_width, target_height / orig_height)  # Compute scale factor
@@ -69,7 +70,8 @@ class BaseOCRProcessor:
         # Converts screenshot to grayscale
         image = screenshot.convert("L")
         width, height = image.size
-        upscale_factor = 3  # Factor to enlarge the image for improved OCR accuracy. I chose three because it felt like a good middle ground.
+        upscale_factor = 3
+        # Factor to enlarge the image for improved OCR accuracy. I chose three because it felt like a good middle ground.
         # Resize the image using high-quality Lanczos resampling
         image = image.resize((width * upscale_factor, height * upscale_factor), resample=Image.Resampling.LANCZOS)
         threshold = 128  # Defining the threshold for converting to binary image
@@ -92,7 +94,8 @@ class AgeOCRProcessor(BaseOCRProcessor):
 class NameOCRProcessor(BaseOCRProcessor):
     def process_ocr(self, screenshot):
         processed_image = self.process_image(screenshot)  # Preprocess image using common method again
-        ocr_result = pytesseract.image_to_string(processed_image).strip()  # Perform OCR with default configuration so characters can be recognized too
+        ocr_result = pytesseract.image_to_string(processed_image).strip()
+        # Perform OCR with default configuration so characters can be recognized too
         return ocr_result  # Return the extracted text
 
 # Class to enable user to select a screen region interactively with a screenshot like interface
@@ -288,7 +291,8 @@ class App:
         result = selector.select_area()  # Lets the user select a region
         if result is not None:
             self.age_rect, selected_pil_image = result  # Stores the selected region and image
-            selected_pil_image = selected_pil_image.convert("RGB")  # Converts the image to RGB to ensure that pygame accepts it without error
+            selected_pil_image = selected_pil_image.convert("RGB")
+            # Converts the image to RGB to ensure that pygame accepts it without error
             mode = selected_pil_image.mode
             size = selected_pil_image.size
             data = selected_pil_image.tobytes()
@@ -306,7 +310,8 @@ class App:
         result = selector.select_area()  # Lets the user select the region
         if result is not None:
             self.name_rect, selected_pil_image = result  # Store selected region and image
-            selected_pil_image = selected_pil_image.convert("RGB")  # Convert image to RGB to ensure that pygame accepts it without error
+            selected_pil_image = selected_pil_image.convert("RGB")
+            # Convert image to RGB to ensure that pygame accepts it without error
             mode = selected_pil_image.mode
             size = selected_pil_image.size
             data = selected_pil_image.tobytes()
@@ -406,7 +411,8 @@ class App:
         self.output_label.configure(text=display_text, bg=bg_color)
         # If a valid OCR data is present, it updates the database accordingly
         if self.latest_patient_name and self.latest_ocr_number is not None and computed_vaccine:
-            current_hash = compute_record_hash(self.latest_ocr_number, self.latest_patient_name, computed_vaccine)  # Compute hash for integrity
+            current_hash = compute_record_hash(self.latest_ocr_number, self.latest_patient_name, computed_vaccine)
+            # Compute hash for integrity
             current_data = (self.latest_ocr_number, computed_vaccine)
             # Updates the database only if the current data is different from the last processed data to avoid duplicates
             if self.last_processed.get(self.latest_patient_name) != current_data:
@@ -547,3 +553,4 @@ class App:
 if __name__ == '__main__':
     app = App()
     app.run()
+
