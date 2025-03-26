@@ -19,14 +19,16 @@ test = sqlite3.connect('example.sqlite')
 cursor = test.cursor()
 
 cursor.execute('''
-DROP TABLE IF EXISTS patients;
+SELECT * FROM patient WHERE patient_name = ?
+;
 ''')
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS patients(name, postcode, dob, nin);
 ''')
-cursor.executemany('''
-INSERT INTO patients VALUES (?, ?, ?, ?);
-''', patients)
+
+cursor.execute('''INSERT INTO vaccination (patient_id, vaccine_type, date_administered) 
+VALUES (?, ?, ?);
+''')
 
 cursor.execute('''
 DROP TABLE IF EXISTS covid_vaccine;
