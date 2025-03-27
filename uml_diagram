@@ -1,0 +1,14 @@
+digraph UML_Diagram {
+	System [label=System]
+	OCRProcessor [label="OCR Processor"]
+	ImageProcessor [label="Image Processor"]
+	TextExtractor [label="Text Extractor"]
+	UserInterface [label="User Interface"]
+	FileHandler [label="File Handler"]
+	System -> OCRProcessor [label=Manages]
+	OCRProcessor -> ImageProcessor [label=Uses]
+	OCRProcessor -> TextExtractor [label=Uses]
+	OCRProcessor -> UserInterface [label=Communicates]
+	UserInterface -> FileHandler [label="Loads/Saves"]
+	FileHandler -> System [label="Sends Data To"]
+}
