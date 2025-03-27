@@ -16,7 +16,7 @@ pygame.init()
 pytesseract.pytesseract.tesseract_cmd = os.path.join(os.getcwd(), r"Tesseract-OCR/tesseract.exe")
 
 # Connecting to or creating if non-existent an SQLite database named 'NHS Database.sqlite'
-test = sqlite3.connect('NHS Database.sqlite')
+test = sqlite3.connect('../NHS Database.sqlite')
 cursor = test.cursor()
 cursor.execute("PRAGMA foreign_keys = ON")  # Enabling support for foreign key constraints in SQLite
 

@@ -17,7 +17,7 @@ on:
     paths:
       - '**.cpp'
       - '**.h'
-      - '**/codeql-analysis.yml'
+      - 'codeql-analysis.yml'
       - 'm4/*.m4'
       - 'Makefile.am'
       - 'autogen.sh'
@@ -28,7 +28,7 @@ on:
     paths:
       - '**.cpp'
       - '**.h'
-      - '**/codeql-analysis.yml'
+      - 'codeql-analysis.yml'
       - 'm4/*.m4'
       - 'Makefile.am'
       - 'autogen.sh'
